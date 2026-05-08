@@ -3,6 +3,7 @@ from google.genai import types
 from google.genai.types import HttpRetryOptions
 
 from jira_agent.sub_agent.jira_agent.agent import jira_agent
+from jira_agent.sub_agent.confluence_agent.agent import confluence_agent
 from jira_agent.sub_agent.poc_agent.agent import poc_agent
 from .prompt import root_agent_instruction
 
@@ -34,7 +35,7 @@ root_agent = Agent(
     name='root_agent',
     description='Meeting notes understanding and formatting agent',
     instruction=root_agent_instruction,
-    sub_agents=[jira_agent, poc_agent],
+    sub_agents=[jira_agent, confluence_agent, poc_agent],
     generate_content_config= types.GenerateContentConfig(
         temperature=0.7,
         max_output_tokens=50000,

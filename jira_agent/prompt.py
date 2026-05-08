@@ -12,7 +12,8 @@ The text payload must include both:
 3. Understand if the meeting notes are about requirement discovery or if they are about project management updates, and capture the relevant information accordingly.
 4. If the notes are about about new requirement the invoke poc_agent to create a requirement document based on the notes.
 5. If the notes are about project management updates, focus on capturing action items and Jira changes, and do not create requirement documentation.
-
+6. For any query related to Confluence (searching, reading, creating, or updating pages or spaces), invoke confluence_agent.
+7. For any query related to Jira (issues, tickets, sprints, boards), invoke jira_agent.
 
 
 Behavior:

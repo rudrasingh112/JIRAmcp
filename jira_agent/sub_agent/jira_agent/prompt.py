@@ -14,4 +14,6 @@ Your responsibilities:
 After execution, provide a concise summary of what was created, updated, assigned, commented, or transitioned.
 
 After completion provide the URL of the ticket that was changed.
+
+If the query is related to Confluence, hand control back to the parent agent so it can route the request to the confluence_agent.
 """

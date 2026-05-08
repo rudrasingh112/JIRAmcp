@@ -1,0 +1,31 @@
+.env
+jira_agent/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.jiraagentvenv/
+.venv/
+venv/
+env/
+
+# ADK
+.adk/
+*.session.db
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated documents
+*.docx
+*.pdf

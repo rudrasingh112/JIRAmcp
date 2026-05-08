@@ -10,21 +10,29 @@ import dotenv
 
 dotenv.load_dotenv()
 
-# Auth for sooperset/mcp-atlassian (uses API token, not OAuth).
 JIRA_URL = os.getenv("JIRA_URL")
 JIRA_EMAIL = os.getenv("JIRA_EMAIL")
 JIRA_API_TOKEN = os.getenv("JIRA_API_TOKEN")
 
-_jira_env = {
-    "JIRA_URL": JIRA_URL,
-    "JIRA_USERNAME": JIRA_EMAIL,
-    "JIRA_API_TOKEN": JIRA_API_TOKEN,
-} if JIRA_URL and JIRA_EMAIL and JIRA_API_TOKEN else None
+# Prefer dedicated CONFLUENCE_* vars if set, otherwise derive from the Jira ones.
+CONFLUENCE_URL = (
+    os.getenv("CONFLUENCE_URL")
+    or os.getenv("CONFLUENCE_BASE_URL")
+    or (f"{JIRA_URL.rstrip('/')}/wiki" if JIRA_URL else None)
+)
+CONFLUENCE_EMAIL = os.getenv("CONFLUENCE_EMAIL") or JIRA_EMAIL
+CONFLUENCE_API_TOKEN = os.getenv("CONFLUENCE_API_TOKEN") or JIRA_API_TOKEN
 
-jira_agent = Agent(
+_confluence_env = {
+    "CONFLUENCE_URL": CONFLUENCE_URL,
+    "CONFLUENCE_USERNAME": CONFLUENCE_EMAIL,
+    "CONFLUENCE_API_TOKEN": CONFLUENCE_API_TOKEN,
+} if CONFLUENCE_URL and CONFLUENCE_EMAIL and CONFLUENCE_API_TOKEN else None
+
+confluence_agent = Agent(
     model='gemini-2.5-pro',
-    name='jira_agent',
-    description='A helpful assistant for user questions.',
+    name='confluence_agent',
+    description='An assistant for searching, reading, and managing Confluence pages and spaces.',
     instruction=instruction,
     generate_content_config=types.GenerateContentConfig(
         temperature=0.7,
@@ -38,7 +46,7 @@ jira_agent = Agent(
             server_params=StdioServerParameters(
                 command='uvx',
                 args=['mcp-atlassian'],
-                env=_jira_env,
+                env=_confluence_env,
             ),
             timeout=300
         ),
